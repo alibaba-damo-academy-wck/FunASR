@@ -33,7 +33,6 @@ log() {
   # This function is from espnet
   local fname=${BASH_SOURCE[1]##*/}
   echo -e "$(date '+%Y-%m-%d %H:%M:%S') (${fname}:${BASH_LINENO[0]}:${FUNCNAME[1]}) $*"
-  local fname=$()
 }
 
 if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
