@@ -211,7 +211,6 @@ def main(**kwargs):
         writer = None
 
     dataloader_tr, dataloader_val = None, None
-    ipdb.set_trace()
     for epoch in range(trainer.start_epoch, trainer.max_epoch):
         time1 = time.perf_counter()
 
