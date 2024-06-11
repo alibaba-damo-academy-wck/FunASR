@@ -29,15 +29,15 @@ val_data="${data_dir}/val.jsonl"
 stage=1
 stop_stage=1
 
-log() {
-  # This function is from espnet
-  local fname=${BASH_SOURCE[1]##*/}
-  echo -e "$(date '+%Y-%m-%d %H:%M:%S') (${fname}:${BASH_LINENO[0]}:${FUNCNAME[1]}) $*"
-}
+#log() {
+#  # This function is from espnet
+#  local fname=${BASH_SOURCE[1]##*/}
+#  echo -e "$(date '+%Y-%m-%d %H:%M:%S') (${fname}:${BASH_LINENO[0]}:${FUNCNAME[1]}) $*"
+#}
 
 if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
   # generate train.jsonl and val.jsonl from wav.scp and text.txt
-  log "stage 0: generate train.jsonl and val.jsonl from wav.scp and text.txt"
+  echo "stage 0: generate train.jsonl and val.jsonl from wav.scp and text.txt"
   scp2jsonl \
   ++scp_file_list='["../../../data/kespeech/train_wav.scp", "../../../data/kespeech/train_text.txt"]' \
   ++data_type_list='["source", "target"]' \
@@ -58,7 +58,7 @@ mkdir -p ${output_dir}
 echo "log_file: ${log_file}"
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
-  log "stage 1: finetune"
+  echo "stage 1: finetune"
   batch_size=45000   # default: 20000
   num_workers=4   # default: 4
   max_epoch=50     # default: 50
