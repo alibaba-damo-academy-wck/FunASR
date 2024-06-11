@@ -36,6 +36,13 @@ from funasr.train_utils.model_summary import model_summary
 from funasr import AutoModel
 
 
+# hydra: 一个用于配置管理的库，在需要不同配置组合的实验中非常有用
+# 这一行是一个 hydra 装饰器，用于初始化配置系统并解析命令行参数
+# config_name=None 意味着没有指定默认的配置文件名
+# version_base=None 意味着没有指定特定的版本基础
+# main_hydra(kwargs: DictConfig): 这是主函数，接收一个 DictConfig 对象 kwargs，
+# 该对象包含所有从配置文件和命令行解析的配置项
+# 整体功能：使用 hydra 管理配置，通过命令行参数和配置文件传递配置项
 @hydra.main(config_name=None, version_base=None)
 def main_hydra(kwargs: DictConfig):
     if kwargs.get("debug", False):
@@ -44,6 +51,7 @@ def main_hydra(kwargs: DictConfig):
         pdb.set_trace()
 
     assert "model" in kwargs
+    # 模型配置检查与下载
     if "model_conf" not in kwargs:
         logging.info("download models from model hub: {}".format(kwargs.get("hub", "ms")))
         kwargs = download_model(is_training=kwargs.get("is_training", True), **kwargs)
