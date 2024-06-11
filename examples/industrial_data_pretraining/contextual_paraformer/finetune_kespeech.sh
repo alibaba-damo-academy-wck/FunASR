@@ -11,9 +11,9 @@ gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 
 ## option 1, download model automatically
 model_name_or_model_dir="iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
+model_revision=v2.0.5
 
-
-## option 2, download model by git
+# option 2, download model by git
 #local_path_root=${workspace}/modelscope_models
 #mkdir -p ${local_path_root}/${model_name_or_model_dir}
 #git clone https://www.modelscope.cn/${model_name_or_model_dir}.git ${local_path_root}/${model_name_or_model_dir}
@@ -26,8 +26,8 @@ data_dir="../../../data/kespeech"
 train_data="${data_dir}/train.jsonl"
 val_data="${data_dir}/val.jsonl"
 
-stage=0
-stop_stage=0
+stage=1
+stop_stage=1
 
 log() {
   # This function is from espnet

@@ -1,4 +1,4 @@
-[//]: # (<div align="left"><img src="docs/images/funasr_logo.jpg" width="400"/></div>)
+[//]: # "<div align="left"><img src="docs/images/funasr_logo.jpg" width="400"/></div>"
 
 (简体中文|[English](./README.md))
 
@@ -6,7 +6,7 @@
 
 [![SVG Banners](https://svg-banners.vercel.app/api?type=origin&text1=FunASR🤠&text2=💖%20A%20Fundamental%20End-to-End%20Speech%20Recognition%20Toolkit&width=800&height=210)](https://github.com/Akshay090/svg-banners)
 
-[//]: # (# FunASR: A Fundamental End-to-End Speech Recognition Toolkit)
+[//]: # "# FunASR: A Fundamental End-to-End Speech Recognition Toolkit"
 
 [![PyPI](https://img.shields.io/pypi/v/funasr)](https://pypi.org/project/funasr/)
 
