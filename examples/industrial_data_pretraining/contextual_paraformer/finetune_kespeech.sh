@@ -60,6 +60,10 @@ echo "log_file: ${log_file}"
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   log "stage 1: finetune"
+  batch_size=10   # default: 20000
+  max_epoch=2     # default: 50
+  keep_nbest_models=1   # default: 20
+
   torchrun \
   --nnodes 1 \
   --nproc_per_node ${gpu_num} \
@@ -68,15 +72,15 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   ++model_revision="${model_revision}" \
   ++train_data_set_list="${train_data}" \
   ++valid_data_set_list="${val_data}" \
-  ++dataset_conf.batch_size=20000 \
+  ++dataset_conf.batch_size=${batch_size} \
   ++dataset_conf.batch_type="token" \
   ++dataset_conf.num_workers=4 \
-  ++train_conf.max_epoch=50 \
+  ++train_conf.max_epoch=${max_epoch} \
   ++train_conf.log_interval=1 \
   ++train_conf.resume=false \
   ++train_conf.validate_interval=2000 \
   ++train_conf.save_checkpoint_interval=2000 \
-  ++train_conf.keep_nbest_models=20 \
+  ++train_conf.keep_nbest_models=${keep_nbest_models} \
   ++optim_conf.lr=0.0002 \
   ++output_dir="${output_dir}" &> ${log_file}
 fi
