@@ -35,6 +35,11 @@ from funasr.utils.misc import prepare_model_dir
 from funasr.train_utils.model_summary import model_summary
 from funasr import AutoModel
 
+try:
+    import ipdb
+except:
+    import pdb as ipdb
+
 
 # hydra: 一个用于配置管理的库，在需要不同配置组合的实验中非常有用
 # 这一行是一个 hydra 装饰器，用于初始化配置系统并解析命令行参数
@@ -206,6 +211,7 @@ def main(**kwargs):
         writer = None
 
     dataloader_tr, dataloader_val = None, None
+    ipdb.set_trace()
     for epoch in range(trainer.start_epoch, trainer.max_epoch):
         time1 = time.perf_counter()
 
