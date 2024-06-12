@@ -51,9 +51,12 @@ except:
 @hydra.main(config_name=None, version_base=None)
 def main_hydra(kwargs: DictConfig):
     if kwargs.get("debug", False):
-        import pdb
+        try:
+            import ipdb
+        except:
+            import pdb as ipdb
 
-        pdb.set_trace()
+        ipdb.set_trace()
 
     assert "model" in kwargs
     # 模型配置检查与下载
