@@ -4,7 +4,7 @@
 # method1, finetune from model hub
 
 # which gpu to train or finetune
-export CUDA_VISIBLE_DEVICES="0,1"
+export CUDA_VISIBLE_DEVICES="0"
 gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 
 # model_name from model_hub, or model_dir in local path
@@ -12,6 +12,8 @@ gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 ## option 1, download model automatically
 model_name_or_model_dir="iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
 model_revision=v2.0.5
+
+model_name_or_model_dir="outputs.0611"
 
 # option 2, download model by git
 #local_path_root=${workspace}/modelscope_models
@@ -60,7 +62,7 @@ echo "log_file: ${log_file}"
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   echo "stage 1: finetune"
-  batch_size=40000   # default: 20000
+  batch_size=20000   # default: 20000
   num_workers=4   # default: 4
   max_epoch=50     # default: 50
   keep_nbest_models=20   # default: 20
@@ -70,9 +72,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   --nproc_per_node ${gpu_num} \
   ../../../funasr/bin/train.py \
   ++model="${model_name_or_model_dir}" \
-  ++model_conf="${model_name_or_model_dir}/config.yaml"
   ++model_revision="${model_revision}" \
-  ++init_param="${model_name_or_model_dir}/model.pt.ep5" \
   ++train_data_set_list="${train_data}" \
   ++valid_data_set_list="${val_data}" \
   ++dataset_conf.batch_size=${batch_size} \
@@ -82,7 +82,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   ++train_conf.log_interval=1 \
   ++train_conf.resume=true \
   ++train_conf.validate_interval=2000 \
-  ++train_conf.save_checkpoint_interval=2000 \
+  ++train_conf.save_checkpoint_interval=5000 \
   ++train_conf.keep_nbest_models=${keep_nbest_models} \
   ++optim_conf.lr=0.0002 \
   ++output_dir="${output_dir}"
