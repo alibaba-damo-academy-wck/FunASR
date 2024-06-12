@@ -53,7 +53,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
 fi
 
 # exp output dir
-output_dir="./outputs.0611"
+output_dir="./outputs_A100_2"
 log_file="${output_dir}/log.txt"
 
 
@@ -62,7 +62,7 @@ echo "log_file: ${log_file}"
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   echo "stage 1: finetune"
-  batch_size=25000   # default: 20000
+  batch_size=20000   # default: 20000
   num_workers=4   # default: 4
   max_epoch=50     # default: 50
   keep_nbest_models=20   # default: 20
@@ -82,7 +82,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   ++train_conf.log_interval=1 \
   ++train_conf.resume=true \
   ++train_conf.validate_interval=2000 \
-  ++train_conf.save_checkpoint_interval=5000 \
+  ++train_conf.save_checkpoint_interval=2000 \
   ++train_conf.keep_nbest_models=${keep_nbest_models} \
   ++optim_conf.lr=0.0002 \
   ++output_dir="${output_dir}"
