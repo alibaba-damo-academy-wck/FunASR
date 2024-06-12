@@ -4,7 +4,7 @@
 # method1, finetune from model hub
 
 # which gpu to train or finetune
-export CUDA_VISIBLE_DEVICES="0"
+export CUDA_VISIBLE_DEVICES="0,1"
 gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 
 # model_name from model_hub, or model_dir in local path
@@ -59,7 +59,7 @@ echo "log_file: ${log_file}"
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   echo "stage 1: finetune"
-  batch_size=45000   # default: 20000
+  batch_size=40000   # default: 20000
   num_workers=4   # default: 4
   max_epoch=50     # default: 50
   keep_nbest_models=20   # default: 20
