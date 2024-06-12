@@ -17,6 +17,7 @@ model_revision=v2.0.5
 #local_path_root=${workspace}/modelscope_models
 #mkdir -p ${local_path_root}/${model_name_or_model_dir}
 #git clone https://www.modelscope.cn/${model_name_or_model_dir}.git ${local_path_root}/${model_name_or_model_dir}
+#git clone https://www.modelscope.cn/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404.git iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404
 #model_name_or_model_dir=${local_path_root}/${model_name_or_model_dir}
 
 
@@ -69,7 +70,9 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   --nproc_per_node ${gpu_num} \
   ../../../funasr/bin/train.py \
   ++model="${model_name_or_model_dir}" \
+  ++model_conf="${model_name_or_model_dir}/config.yaml"
   ++model_revision="${model_revision}" \
+  ++init_param="${model_name_or_model_dir}/model.pt.ep5" \
   ++train_data_set_list="${train_data}" \
   ++valid_data_set_list="${val_data}" \
   ++dataset_conf.batch_size=${batch_size} \
@@ -77,7 +80,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   ++dataset_conf.num_workers=${num_workers} \
   ++train_conf.max_epoch=${max_epoch} \
   ++train_conf.log_interval=1 \
-  ++train_conf.resume=false \
+  ++train_conf.resume=true \
   ++train_conf.validate_interval=2000 \
   ++train_conf.save_checkpoint_interval=2000 \
   ++train_conf.keep_nbest_models=${keep_nbest_models} \
