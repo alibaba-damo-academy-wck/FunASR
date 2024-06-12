@@ -72,7 +72,6 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   --nproc_per_node ${gpu_num} \
   ../../../funasr/bin/train.py \
   ++model="${model_name_or_model_dir}" \
-  ++model_conf="${model_name_or_model_dir}/config.yaml" \
   ++model_revision="${model_revision}" \
   ++train_data_set_list="${train_data}" \
   ++valid_data_set_list="${val_data}" \
