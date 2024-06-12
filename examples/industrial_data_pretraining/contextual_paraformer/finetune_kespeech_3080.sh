@@ -53,7 +53,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
 fi
 
 # exp output dir
-output_dir="./outputs"
+output_dir="./outputs.0611"
 log_file="${output_dir}/log.txt"
 
 
