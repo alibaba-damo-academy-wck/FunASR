@@ -78,7 +78,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   ++dataset_conf.num_workers=${num_workers} \
   ++train_conf.max_epoch=${max_epoch} \
   ++train_conf.log_interval=1 \
-  ++train_conf.resume=false \
+  ++train_conf.resume=true \
   ++train_conf.validate_interval=2000 \
   ++train_conf.save_checkpoint_interval=2000 \
   ++train_conf.keep_nbest_models=${keep_nbest_models} \

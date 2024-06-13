@@ -111,6 +111,7 @@ FunASR开源了大量在工业数据上预训练模型，您可以在[模型许�
 |                        emotion2vec+large <br> ([⭐](https://modelscope.cn/models/iic/emotion2vec_plus_large/summary)  [🤗](https://huggingface.co/emotion2vec/emotion2vec_plus_large) )                        |    情感识别模型          | 40000小时，4种情感类别 |  300M  |
 
 <a name="快速开始"></a>
+
 ## 快速开始
 
 下面为快速上手教程，测试音频（[中文](https://isv-data.oss-cn-hangzhou.aliyuncs.com/ics/MaaS/ASR/test_audio/vad_example.wav)，[英文](https://isv-data.oss-cn-hangzhou.aliyuncs.com/ics/MaaS/ASR/test_audio/asr_example_en.wav)）
