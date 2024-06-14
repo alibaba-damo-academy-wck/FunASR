@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-CUDA_VISIBLE_DEVICES="0,1"
+CUDA_VISIBLE_DEVICES="1"
 
 # general configuration
 feats_dir="../DATA" #feature output dictionary
@@ -44,16 +44,22 @@ test_sets="dev test"
 config=paraformer_conformer_12e_6d_2048_256.yaml
 model_dir="baseline_$(basename "${config}" .yaml)_${lang}_${token_type}_${tag}"
 
+log() {
+  # This function is from espnet
+  local fname=${BASH_SOURCE[1]##*/}
+  echo -e "$(date '+%Y-%m-%d %H:%M:%S') (${fname}:${BASH_LINENO[0]}:${FUNCNAME[1]}) $*"
+}
+
 
 if [ ${stage} -le -1 ] && [ ${stop_stage} -ge -1 ]; then
-    echo "stage -1: Data Download"
+    log "stage -1: Data Download"
     mkdir -p ${raw_data}
     local/download_and_untar.sh ${raw_data} ${data_url} data_aishell
     local/download_and_untar.sh ${raw_data} ${data_url} resource_aishell
 fi
 
 if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
-    echo "stage 0: Data preparation"
+    log "stage 0: Data preparation"
     # Data preparation
     local/aishell_data_prep.sh ${raw_data}/data_aishell/wav ${raw_data}/data_aishell/transcript ${feats_dir}
     for x in train dev test; do
@@ -73,7 +79,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
 fi
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
-    echo "stage 1: Feature and CMVN Generation"
+    log "stage 1: Feature and CMVN Generation"
     python ../../../funasr/bin/compute_audio_cmvn.py \
     --config-path "${workspace}/conf" \
     --config-name "${config}" \
@@ -82,12 +88,12 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
 fi
 
 token_list=${feats_dir}/data/${lang}_token_list/$token_type/tokens.txt
-echo "dictionary: ${token_list}"
+log "dictionary: ${token_list}"
 if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
-    echo "stage 2: Dictionary Preparation"
+    log "stage 2: Dictionary Preparation"
     mkdir -p ${feats_dir}/data/${lang}_token_list/$token_type/
    
-    echo "make a dictionary"
+    log "make a dictionary"
     echo "<blank>" > ${token_list}
     echo "<s>" >> ${token_list}
     echo "</s>" >> ${token_list}
@@ -98,17 +104,17 @@ fi
 
 # LM Training Stage
 if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
-    echo "stage 3: LM Training"
+    log "stage 3: LM Training"
 fi
 
 # ASR Training Stage
 if [ ${stage} -le 4 ] && [ ${stop_stage} -ge 4 ]; then
-  echo "stage 4: ASR Training"
+  log "stage 4: ASR Training"
 
   mkdir -p ${exp_dir}/exp/${model_dir}
   current_time=$(date "+%Y-%m-%d_%H-%M")
   log_file="${exp_dir}/exp/${model_dir}/train.log.txt.${current_time}"
-  echo "log_file: ${log_file}"
+  log "log_file: ${log_file}"
 
   export CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES
   gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
@@ -127,10 +133,9 @@ if [ ${stage} -le 4 ] && [ ${stop_stage} -ge 4 ]; then
 fi
 
 
-
 # Testing Stage
 if [ ${stage} -le 5 ] && [ ${stop_stage} -ge 5 ]; then
-  echo "stage 5: Inference"
+  log "stage 5: Inference"
 
   if [ ${inference_device} == "cuda" ]; then
       nj=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
