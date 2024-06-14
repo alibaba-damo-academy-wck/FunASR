@@ -4,16 +4,16 @@
 # method1, finetune from model hub
 
 # which gpu to train or finetune
-export CUDA_VISIBLE_DEVICES="0,1"
+export CUDA_VISIBLE_DEVICES="0,1,2,3"
 gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 
 # model_name from model_hub, or model_dir in local path
 
 ## option 1, download model automatically
-model_name_or_model_dir="iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
+model_name_or_model_dir="./iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
 model_revision=v2.0.5
 
-model_name_or_model_dir="pretrained_model/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
+model_name_or_model_dir="./pretrained_model/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
 
 # option 2, download model by git
 #local_path_root=${workspace}/modelscope_models
@@ -62,7 +62,7 @@ echo "log_file: ${log_file}"
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   echo "stage 1: finetune"
-  batch_size=20000   # default: 20000
+  batch_size=2000   # default: 20000
   num_workers=4   # default: 4
   max_epoch=50     # default: 50
   keep_nbest_models=20   # default: 20
