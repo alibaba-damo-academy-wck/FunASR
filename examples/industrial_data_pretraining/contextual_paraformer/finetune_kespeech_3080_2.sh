@@ -4,7 +4,7 @@
 # method1, finetune from model hub
 
 # which gpu to train or finetune
-export CUDA_VISIBLE_DEVICES="0"
+export CUDA_VISIBLE_DEVICES="0,1"
 gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 
 # model_name from model_hub, or model_dir in local path
@@ -53,7 +53,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
 fi
 
 # exp output dir
-output_dir="./outputs.0611"
+output_dir="./outputs_A100_2"
 log_file="${output_dir}/log.txt"
 
 

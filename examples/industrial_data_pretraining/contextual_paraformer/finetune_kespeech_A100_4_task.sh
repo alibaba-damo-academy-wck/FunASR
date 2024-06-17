@@ -3,17 +3,34 @@
 
 # method1, finetune from model hub
 
+
+__conda_setup="$('/opt/conda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/conda/etc/profile.d/conda.sh" ]; then
+        . "/opt/conda/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/conda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+conda activate /datas/runtimes/env_funasr
+
 # which gpu to train or finetune
-export CUDA_VISIBLE_DEVICES="0,1,2,3"
+export CUDA_VISIBLE_DEVICES="0"
 gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 
 # model_name from model_hub, or model_dir in local path
 
+root="/datas/workspaces/speech/asr/framework/funasr/FunASR/examples/industrial_data_pretraining/contextual_paraformer"
+
 ## option 1, download model automatically
-model_name_or_model_dir="./iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
+model_name_or_model_dir="${root}/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
 model_revision=v2.0.5
 
-model_name_or_model_dir="./pretrained_model/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
+model_name_or_model_dir="${root}/pretrained_model/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
 
 # option 2, download model by git
 #local_path_root=${workspace}/modelscope_models
@@ -25,6 +42,7 @@ model_name_or_model_dir="./pretrained_model/iic/speech_paraformer-large-contextu
 
 # data dir, which contains: train.json, val.json
 data_dir="../../../data/kespeech"
+data_dir="/datas/workspaces/speech/asr/framework/funasr/FunASR/data/kespeech"
 
 train_data="${data_dir}/train.jsonl"
 val_data="${data_dir}/val.jsonl"
@@ -62,7 +80,7 @@ echo "log_file: ${log_file}"
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   echo "stage 1: finetune"
-  batch_size=2000   # default: 20000
+  batch_size=1000   # default: 20000
   num_workers=4   # default: 4
   max_epoch=50     # default: 50
   keep_nbest_models=20   # default: 20
@@ -70,7 +88,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   torchrun \
   --nnodes 1 \
   --nproc_per_node ${gpu_num} \
-  ../../../funasr/bin/train.py \
+  /datas/workspaces/speech/asr/framework/funasr/FunASR/funasr/bin/train.py \
   ++model="${model_name_or_model_dir}" \
   ++model_revision="${model_revision}" \
   ++train_data_set_list="${train_data}" \
