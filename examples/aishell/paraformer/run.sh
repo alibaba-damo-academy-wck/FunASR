@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 
-CUDA_VISIBLE_DEVICES="1"
+CUDA_VISIBLE_DEVICES="0,1"
 
 # general configuration
 feats_dir="../DATA" #feature output dictionary
 exp_dir=`pwd`
 lang=zh
 token_type=char
-stage=0
-stop_stage=5
+stage=4
+stop_stage=4
 
 # feature configuration
 nj=32
@@ -118,6 +118,7 @@ if [ ${stage} -le 4 ] && [ ${stop_stage} -ge 4 ]; then
 
   export CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES
   gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
+
   torchrun \
   --nnodes 1 \
   --nproc_per_node ${gpu_num} \
@@ -129,7 +130,20 @@ if [ ${stage} -le 4 ] && [ ${stop_stage} -ge 4 ]; then
   ++valid_data_set_list="${feats_dir}/data/${valid_set}/audio_datasets.jsonl" \
   ++tokenizer_conf.token_list="${token_list}" \
   ++frontend_conf.cmvn_file="${feats_dir}/data/${train_set}/am.mvn" \
-  ++output_dir="${exp_dir}/exp/${model_dir}" &> ${log_file}
+  ++output_dir="${exp_dir}/exp/${model_dir}"
+
+#  torchrun \
+#  --nnodes 1 \
+#  --nproc_per_node ${gpu_num} \
+#  --master_port ${master_port} \
+#  ../../../funasr/bin/train.py \
+#  --config-path "${workspace}/conf" \
+#  --config-name "${config}" \
+#  ++train_data_set_list="${feats_dir}/data/${train_set}/audio_datasets.jsonl" \
+#  ++valid_data_set_list="${feats_dir}/data/${valid_set}/audio_datasets.jsonl" \
+#  ++tokenizer_conf.token_list="${token_list}" \
+#  ++frontend_conf.cmvn_file="${feats_dir}/data/${train_set}/am.mvn" \
+#  ++output_dir="${exp_dir}/exp/${model_dir}" &> ${log_file}
 fi
 
 
