@@ -1,3 +1,6 @@
+examples/aishell/DATA/*
+examples/aishell/raw_data/*
+examples/industrial_data_pretraining/contextual_paraformer/pretrained_model/*
 *.pyc
 *.tar.gz
 */*/*/__pycache__/
