@@ -27,7 +27,7 @@ gpu_num=$(echo $CUDA_VISIBLE_DEVICES | awk -F "," '{print NF}')
 root="/datas/workspaces/speech/asr/framework/funasr/FunASR/examples/industrial_data_pretraining/contextual_paraformer"
 
 ## option 1, download model automatically
-model_name_or_model_dir="${root}/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
+model_name_or_model_dir="iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
 model_revision=v2.0.5
 
 model_name_or_model_dir="${root}/pretrained_model/iic/speech_paraformer-large-contextual_asr_nat-zh-cn-16k-common-vocab8404"
@@ -103,7 +103,8 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
   ++train_conf.save_checkpoint_interval=2000 \
   ++train_conf.keep_nbest_models=${keep_nbest_models} \
   ++optim_conf.lr=0.0002 \
-  ++output_dir="${output_dir}"
+  ++output_dir="${output_dir}" \
+  ++debug=true
 
 #  torchrun \
 #  --nnodes 1 \
