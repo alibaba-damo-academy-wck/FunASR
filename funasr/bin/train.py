@@ -55,7 +55,6 @@ def main_hydra(kwargs: DictConfig):
             import ipdb
         except:
             import pdb as ipdb
-
         ipdb.set_trace()
 
     assert "model" in kwargs
