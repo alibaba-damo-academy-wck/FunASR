@@ -1,3 +1,5 @@
+examples/aishell/paraformer/log/*
+examples/aishell/paraformer/exp/*
 examples/aishell/raw_data
 examples/aishell/DATA/*
 examples/aishell/raw_data/*
